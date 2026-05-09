@@ -1,0 +1,17 @@
+{
+    "id": "test-patient-001",
+    "name": "Jane Doe",
+    "age": 28,
+    "vitals": {
+        "heart_rate": 72,
+        "blood_pressure": "120/80",
+        "temperature": 98.6
+    },
+    "history": [
+        {
+            "date": "2024-01-15",
+            "condition": "Mild Anemia",
+            "status": "Recovered"
+        }
+    ]
+}

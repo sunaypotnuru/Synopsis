@@ -1,0 +1,342 @@
+[
+  {
+    "name": "Root Health",
+    "url": "http://localhost:10000/health",
+    "status": "\u2705 PASS",
+    "status_code": 200,
+    "response": {
+      "status": "healthy"
+    }
+  },
+  {
+    "name": "API v1 Health",
+    "url": "http://localhost:10000/api/v1/health",
+    "status": "\u2705 PASS",
+    "status_code": 200,
+    "response": {
+      "status": "ok",
+      "timestamp": "2026-05-08T05:27:37.030751+00:00",
+      "version": "3.0.0"
+    }
+  },
+  {
+    "name": "System Health",
+    "url": "http://localhost:10000/api/v1/system-health",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "MCP Health",
+    "url": "http://localhost:10000/api/v1/mcp-health",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "Admin Stats",
+    "url": "http://localhost:10000/api/v1/admin/stats",
+    "status": "\u2705 PASS",
+    "status_code": 401,
+    "response": {
+      "detail": "Authentication required"
+    }
+  },
+  {
+    "name": "Admin Users",
+    "url": "http://localhost:10000/api/v1/admin/users",
+    "status": "\u2705 PASS",
+    "status_code": 401,
+    "response": {
+      "detail": "Authentication required"
+    }
+  },
+  {
+    "name": "Admin Dashboard",
+    "url": "http://localhost:10000/api/v1/admin/dashboard",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "Admin Audit Logs",
+    "url": "http://localhost:10000/api/v1/admin/audit-logs",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "Doctor Profile",
+    "url": "http://localhost:10000/api/v1/doctor/profile",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "Doctor Appointments",
+    "url": "http://localhost:10000/api/v1/doctor/appointments",
+    "status": "\u2705 PASS",
+    "status_code": 401,
+    "response": {
+      "detail": "Authentication required"
+    }
+  },
+  {
+    "name": "Doctor Patients",
+    "url": "http://localhost:10000/api/v1/doctor/patients",
+    "status": "\u2705 PASS",
+    "status_code": 401,
+    "response": {
+      "detail": "Authentication required"
+    }
+  },
+  {
+    "name": "Doctor Dashboard",
+    "url": "http://localhost:10000/api/v1/doctor/dashboard",
+    "status": "\u2705 PASS",
+    "status_code": 401,
+    "response": {
+      "detail": "Authentication required"
+    }
+  },
+  {
+    "name": "Patient Profile",
+    "url": "http://localhost:10000/api/v1/patient/profile",
+    "status": "\u274c FAIL",
+    "status_code": 405,
+    "response": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "name": "Patient Appointments",
+    "url": "http://localhost:10000/api/v1/patient/appointments",
+    "status": "\u2705 PASS",
+    "status_code": 401,
+    "response": {
+      "detail": "Authentication required"
+    }
+  },
+  {
+    "name": "Patient Medical Records",
+    "url": "http://localhost:10000/api/v1/patient/medical-records",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "Patient Dashboard",
+    "url": "http://localhost:10000/api/v1/patient/dashboard",
+    "status": "\u2705 PASS",
+    "status_code": 401,
+    "response": {
+      "detail": "Authentication required"
+    }
+  },
+  {
+    "name": "ML Services Status",
+    "url": "http://localhost:10000/api/v1/ml/services/status",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "ML Anemia Predict",
+    "url": "http://localhost:10000/api/v1/ml/anemia/predict",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "ML DR Predict",
+    "url": "http://localhost:10000/api/v1/ml/diabetic-retinopathy/predict",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "Hospitals",
+    "url": "http://localhost:10000/api/v1/hospitals",
+    "status": "\u2705 PASS",
+    "status_code": 200,
+    "response": [
+      {
+        "id": 2,
+        "name": "Fortis Hospital",
+        "address": "Mumbai Central, Maharashtra 400008",
+        "distance": "7.2 km",
+        "latitude": 19.0176,
+        "longitude": 72.8479,
+        "rating": 4.7,
+        "phone": "+91-22-6150-1234",
+        "hours": "24/7",
+        "specialties": [
+          "Internal Medicine"
+        ],
+        "type": "Multi-specialty"
+      },
+      {
+        "id": 1,
+        "name": "Apollo Hospitals",
+        "address": "Navi Mumbai, Maharashtra 400703",
+        "distance": "16.3 km",
+        "latitude": 19.0176,
+        "longitude": 73.0196,
+        "rating": 4.8,
+        "phone": "+91-22-6789-0123",
+        "hours": "24/7",
+        "specialties": [
+          "Hematology",
+          "General Medicine"
+        ],
+        "type": "Multi-specialty"
+      }
+    ]
+  },
+  {
+    "name": "I18n Languages",
+    "url": "http://localhost:10000/api/v1/i18n/languages",
+    "status": "\u2705 PASS",
+    "status_code": 200,
+    "response": {
+      "languages": {
+        "en": {
+          "name": "English",
+          "native_name": "English",
+          "rtl": false
+        },
+        "es": {
+          "name": "Spanish",
+          "native_name": "Espa\u00f1ol",
+          "rtl": false
+        },
+        "fr": {
+          "name": "French",
+          "native_name": "Fran\u00e7ais",
+          "rtl": false
+        },
+        "de": {
+          "name": "German",
+          "native_name": "Deutsch",
+          "rtl": false
+        },
+        "ar": {
+          "name": "Arabic",
+          "native_name": "\u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+          "rtl": true
+        },
+        "hi": {
+          "name": "Hindi",
+          "native_name": "\u0939\u093f\u0928\u094d\u0926\u0940",
+          "rtl": false
+        },
+        "kn": {
+          "name": "Kannada",
+          "native_name": "\u0c95\u0ca8\u0ccd\u0ca8\u0ca1",
+          "rtl": false
+        },
+        "mr": {
+          "name": "Marathi",
+          "native_name": "\u092e\u0930\u093e\u0920\u0940",
+          "rtl": false
+        },
+        "zh": {
+          "name": "Chinese",
+          "native_name": "\u4e2d\u6587",
+          "rtl": false
+        },
+        "pt": {
+          "name": "Portuguese",
+          "native_name": "Portugu\u00eas",
+          "rtl": false
+        },
+        "ru": {
+          "name": "Russian",
+          "native_name": "\u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+          "rtl": false
+        },
+        "ja": {
+          "name": "Japanese",
+          "native_name": "\u65e5\u672c\u8a9e",
+          "rtl": false
+        }
+      },
+      "default": "en"
+    }
+  },
+  {
+    "name": "Search",
+    "url": "http://localhost:10000/api/v1/search?q=test",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "FHIR Metadata",
+    "url": "http://localhost:10000/api/v1/fhir/metadata",
+    "status": "\u2705 PASS",
+    "status_code": 200,
+    "response": {
+      "resourceType": "Bundle",
+      "type": "searchset",
+      "total": 0,
+      "entry": []
+    }
+  },
+  {
+    "name": "Reports",
+    "url": "http://localhost:10000/api/v1/reports",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "Audit Logs",
+    "url": "http://localhost:10000/api/v1/audit",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  },
+  {
+    "name": "Messages",
+    "url": "http://localhost:10000/api/v1/messages",
+    "status": "\u2705 PASS",
+    "status_code": 405,
+    "response": {
+      "detail": "Method Not Allowed"
+    }
+  },
+  {
+    "name": "Gamification",
+    "url": "http://localhost:10000/api/v1/gamification",
+    "status": "\u2705 PASS",
+    "status_code": 404,
+    "response": {
+      "detail": "Not Found"
+    }
+  }
+]

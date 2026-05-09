@@ -1,0 +1,254 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "patient-58",
+        "name": [
+          {
+            "given": [
+              "Patient_58"
+            ],
+            "family": "Synthea"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1995-08-20",
+        "address": [
+          {
+            "city": "Boston",
+            "state": "MA",
+            "country": "US"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "542398d4-8ab8-49cc-9f28-4d8626d25120",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "79888-4"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-58"
+        },
+        "effectiveDateTime": "2026-02-13T12:52:22.456109",
+        "valueQuantity": {
+          "value": 14.0,
+          "unit": "g/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "g/dL"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "8d1d28f4-14ea-4f46-a346-81142c239f85",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "49551-5"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-58"
+        },
+        "effectiveDateTime": "2025-11-30T12:52:22.456109",
+        "valueQuantity": {
+          "value": 11.3,
+          "unit": "g/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "g/dL"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "56765ea4-5336-4e6a-9d52-37d195dbd5c0",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "89204-2"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-58"
+        },
+        "effectiveDateTime": "2025-12-03T12:52:22.456109",
+        "valueQuantity": {
+          "value": 8.3,
+          "unit": "g/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "g/dL"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "9b77f235-3d6d-44d6-8a76-6ddee61c74af",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "89204-2"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-58"
+        },
+        "effectiveDateTime": "2025-07-08T12:52:22.456109",
+        "valueQuantity": {
+          "value": 8.4,
+          "unit": "g/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "g/dL"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "e100b2ff-d0e8-4cac-8a1b-48de80d2ea82",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "79893-4"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-58"
+        },
+        "effectiveDateTime": "2026-04-07T12:52:22.456109",
+        "valueQuantity": {
+          "value": 11.1,
+          "unit": "g/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "g/dL"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "0e340c19-20da-42b3-b89f-e9ed2d5011bc",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "89204-2"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-58"
+        },
+        "effectiveDateTime": "2026-03-14T12:52:22.456109",
+        "valueQuantity": {
+          "value": 13.6,
+          "unit": "g/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "g/dL"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "39f6f975-5a6d-4d3c-abd1-4e5e14542b72",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "89204-2"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-58"
+        },
+        "effectiveDateTime": "2026-03-11T12:52:22.456109",
+        "valueQuantity": {
+          "value": 12.9,
+          "unit": "g/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "g/dL"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "f6a36086-99bc-4288-8d82-ee67565bc8c1",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "49551-5"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-58"
+        },
+        "effectiveDateTime": "2026-03-01T12:52:22.456109",
+        "valueQuantity": {
+          "value": 14.6,
+          "unit": "g/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "g/dL"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "f3c5096c-0d24-4f47-a001-a87b78e4f804",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "79888-4"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-58"
+        },
+        "effectiveDateTime": "2026-01-28T12:52:22.456109",
+        "valueQuantity": {
+          "value": 15.2,
+          "unit": "g/dL",
+          "system": "http://unitsofmeasure.org",
+          "code": "g/dL"
+        }
+      }
+    }
+  ]
+}

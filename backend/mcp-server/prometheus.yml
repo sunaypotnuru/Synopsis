@@ -1,0 +1,179 @@
+# ============================================================================
+# Prometheus Configuration - NetraAI MCP Server Monitoring
+# ============================================================================
+# Version: 1.0
+# Scrape Interval: 15 seconds
+# Retention: 30 days
+# ============================================================================
+
+global:
+  # How frequently to scrape targets
+  scrape_interval: 15s
+  
+  # How long until a scrape request times out
+  scrape_timeout: 10s
+  
+  # How frequently to evaluate rules
+  evaluation_interval: 15s
+  
+  # External labels (for federation or remote write)
+  external_labels:
+    cluster: 'netra-ai-production'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - 'alertmanager:9093'
+
+# Load alerting rules
+rule_files:
+  - 'alerts/*.yml'
+
+# Scrape configurations
+scrape_configs:
+  # ============================================================================
+  # 1. NetraAI MCP Server (Render Free Tier)
+  # ============================================================================
+  - job_name: 'netra-ai-mcp-server'
+    metrics_path: '/metrics'
+    scheme: 'https'
+    static_configs:
+      - targets:
+          - 'netra-ai-mcp.onrender.com'
+    
+    # Scrape interval (override global)
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    
+    # Relabeling (add custom labels)
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'mcp-server'
+      
+      - source_labels: [__address__]
+        target_label: service
+        replacement: 'netra-ai-mcp'
+    
+    # Metric relabeling (filter or transform metrics)
+    metric_relabel_configs:
+      # Keep only MCP-related metrics
+      - source_labels: [__name__]
+        regex: 'mcp_.*|up|process_.*'
+        action: keep
+
+  # ============================================================================
+  # 2. Prometheus Self-Monitoring
+  # ============================================================================
+  - job_name: 'prometheus'
+    static_configs:
+      - targets:
+          - 'localhost:9090'
+
+  # ============================================================================
+  # 3. Grafana Monitoring
+  # ============================================================================
+  - job_name: 'grafana'
+    static_configs:
+      - targets:
+          - 'grafana:3000'
+
+  # ============================================================================
+  # 4. Alertmanager Monitoring
+  # ============================================================================
+  - job_name: 'alertmanager'
+    static_configs:
+      - targets:
+          - 'alertmanager:9093'
+
+  # ============================================================================
+  # 5. Node Exporter (Oracle Cloud VM Metrics - Optional)
+  # ============================================================================
+  # Uncomment to monitor Oracle Cloud VM
+  # - job_name: 'node-exporter'
+  #   static_configs:
+  #     - targets:
+  #         - 'localhost:9100'
+
+# ============================================================================
+# METRICS COLLECTED
+# ============================================================================
+#
+# MCP Server Metrics:
+# - mcp_tool_invocations_total{tool_name, status}
+# - mcp_tool_latency_seconds{tool_name}
+# - mcp_active_sessions
+# - mcp_prediction_confidence{model_name}
+#
+# System Metrics:
+# - process_cpu_seconds_total
+# - process_resident_memory_bytes
+# - process_open_fds
+# - process_start_time_seconds
+#
+# HTTP Metrics (if using FastAPI):
+# - http_requests_total{method, endpoint, status}
+# - http_request_duration_seconds{method, endpoint}
+#
+# ============================================================================
+
+# ============================================================================
+# QUERY EXAMPLES
+# ============================================================================
+#
+# 1. Request Rate (requests per second):
+#    rate(mcp_tool_invocations_total[5m])
+#
+# 2. Error Rate:
+#    rate(mcp_tool_invocations_total{status="error"}[5m]) / 
+#    rate(mcp_tool_invocations_total[5m])
+#
+# 3. P95 Latency:
+#    histogram_quantile(0.95, 
+#      rate(mcp_tool_latency_seconds_bucket[5m]))
+#
+# 4. Active Sessions:
+#    mcp_active_sessions
+#
+# 5. Memory Usage:
+#    process_resident_memory_bytes / 1024 / 1024
+#
+# 6. CPU Usage:
+#    rate(process_cpu_seconds_total[5m]) * 100
+#
+# 7. Predictions by Model:
+#    sum by (model_name) (
+#      rate(mcp_tool_invocations_total{tool_name=~"diagnose_.*|detect_.*|screen_.*"}[5m])
+#    )
+#
+# 8. Average Confidence:
+#    avg by (model_name) (mcp_prediction_confidence)
+#
+# ============================================================================
+
+# ============================================================================
+# TROUBLESHOOTING
+# ============================================================================
+#
+# 1. Metrics not appearing:
+#    - Check /metrics endpoint: curl https://netra-ai-mcp.onrender.com/metrics
+#    - Verify Prometheus can reach target: Status > Targets
+#    - Check Prometheus logs: docker-compose logs prometheus
+#
+# 2. High cardinality warnings:
+#    - Limit label values (e.g., don't use patient_id as label)
+#    - Use metric_relabel_configs to drop high-cardinality labels
+#
+# 3. Scrape timeouts:
+#    - Increase scrape_timeout
+#    - Optimize /metrics endpoint (cache metrics)
+#
+# 4. Storage issues:
+#    - Reduce retention time (--storage.tsdb.retention.time)
+#    - Increase disk space
+#    - Use remote write to external storage
+#
+# ============================================================================

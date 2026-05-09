@@ -1,0 +1,381 @@
+/* ============================================
+   ACCESSIBILITY STYLES
+   ============================================ */
+
+/* Screen Reader Only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.sr-only:focus,
+.focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+/* High Contrast Mode */
+.high-contrast {
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+}
+
+.high-contrast * {
+    border-color: currentColor !important;
+}
+
+.high-contrast button,
+.high-contrast a {
+    text-decoration: underline;
+}
+
+.high-contrast img {
+    filter: contrast(1.2);
+}
+
+/* Large Text Mode */
+.large-text {
+    font-size: 125% !important;
+}
+
+.large-text * {
+    line-height: 1.6 !important;
+}
+
+/* Enhanced Focus Indicators */
+.enhanced-focus *:focus {
+    outline: 3px solid #4F46E5 !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2) !important;
+}
+
+.enhanced-focus *:focus-visible {
+    outline: 3px solid #4F46E5 !important;
+    outline-offset: 2px !important;
+}
+
+/* Reduced Motion */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+/* Color Blind Modes */
+
+/* Protanopia (Red-Blind) */
+.protanopia {
+    filter: url('#protanopia-filter');
+}
+
+.protanopia * {
+    --red-shift: 0.567, 0.433, 0;
+    --green-shift: 0.558, 0.442, 0;
+    --blue-shift: 0, 0.242, 0.758;
+}
+
+/* Deuteranopia (Green-Blind) */
+.deuteranopia {
+    filter: url('#deuteranopia-filter');
+}
+
+.deuteranopia * {
+    --red-shift: 0.625, 0.375, 0;
+    --green-shift: 0.7, 0.3, 0;
+    --blue-shift: 0, 0.3, 0.7;
+}
+
+/* Tritanopia (Blue-Blind) */
+.tritanopia {
+    filter: url('#tritanopia-filter');
+}
+
+.tritanopia * {
+    --red-shift: 0.95, 0.05, 0;
+    --green-shift: 0, 0.433, 0.567;
+    --blue-shift: 0, 0.475, 0.525;
+}
+
+/* Monochrome */
+.monochrome {
+    filter: grayscale(100%);
+}
+
+/* Keyboard Navigation Helpers */
+[tabindex="-1"]:focus {
+    outline: none;
+}
+
+/* Skip Links */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #4F46E5;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 0 0 4px 0;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* ARIA Live Regions */
+[aria-live="polite"],
+[aria-live="assertive"] {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Focus Trap */
+.focus-trap {
+    position: relative;
+}
+
+.focus-trap::before,
+.focus-trap::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+/* Accessible Buttons */
+button:disabled,
+[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Accessible Forms */
+input:invalid,
+select:invalid,
+textarea:invalid {
+    border-color: #EF4444;
+}
+
+input:valid,
+select:valid,
+textarea:valid {
+    border-color: #10B981;
+}
+
+/* Accessible Tables */
+table caption {
+    padding: 8px;
+    font-weight: bold;
+    text-align: left;
+}
+
+th[scope="col"] {
+    background-color: #F3F4F6;
+}
+
+th[scope="row"] {
+    font-weight: bold;
+}
+
+/* Accessible Modals */
+[role="dialog"],
+[role="alertdialog"] {
+    position: fixed;
+    z-index: 1000;
+}
+
+[role="dialog"] [aria-modal="true"],
+[role="alertdialog"] [aria-modal="true"] {
+    outline: none;
+}
+
+/* Accessible Tooltips */
+[role="tooltip"] {
+    position: absolute;
+    z-index: 1000;
+    padding: 4px 8px;
+    background: #1F2937;
+    color: white;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Accessible Progress Bars */
+[role="progressbar"] {
+    position: relative;
+    height: 20px;
+    background: #E5E7EB;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+[role="progressbar"]::after {
+    content: attr(aria-valuenow) '%';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Accessible Alerts */
+[role="alert"] {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 8px 0;
+}
+
+[role="alert"][aria-live="assertive"] {
+    background: #FEE2E2;
+    border: 1px solid #EF4444;
+    color: #991B1B;
+}
+
+[role="alert"][aria-live="polite"] {
+    background: #DBEAFE;
+    border: 1px solid #3B82F6;
+    color: #1E40AF;
+}
+
+/* Accessible Menus */
+[role="menu"],
+[role="menubar"] {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+[role="menuitem"],
+[role="menuitemcheckbox"],
+[role="menuitemradio"] {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+[role="menuitem"]:focus,
+[role="menuitemcheckbox"]:focus,
+[role="menuitemradio"]:focus {
+    background: #EEF2FF;
+    outline: 2px solid #4F46E5;
+}
+
+/* Accessible Tabs */
+[role="tablist"] {
+    display: flex;
+    border-bottom: 2px solid #E5E7EB;
+}
+
+[role="tab"] {
+    padding: 12px 24px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+[role="tab"][aria-selected="true"] {
+    border-bottom: 2px solid #4F46E5;
+    color: #4F46E5;
+    font-weight: bold;
+}
+
+[role="tabpanel"] {
+    padding: 16px;
+}
+
+[role="tabpanel"][aria-hidden="true"] {
+    display: none;
+}
+
+/* Accessible Accordions */
+[role="region"][aria-labelledby] {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    margin: 8px 0;
+}
+
+button[aria-expanded] {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    background: #F9FAFB;
+    border: none;
+    cursor: pointer;
+}
+
+button[aria-expanded="true"] {
+    background: #EEF2FF;
+}
+
+/* Print Styles for Accessibility */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    a[href]::after {
+        content: " (" attr(href) ")";
+    }
+    
+    abbr[title]::after {
+        content: " (" attr(title) ")";
+    }
+}
+
+/* Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Prefers Color Scheme */
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+    }
+}
+
+/* High Contrast Mode (Windows) */
+@media (prefers-contrast: high) {
+    * {
+        border-color: currentColor !important;
+    }
+    
+    button,
+    a {
+        text-decoration: underline;
+    }
+}
+
+/* SVG Filters for Color Blind Modes */
+svg.accessibility-filters {
+    position: absolute;
+    width: 0;
+    height: 0;
+}

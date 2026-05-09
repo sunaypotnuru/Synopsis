@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+**/node_modules/
+frontend/node_modules/
+apps/web/node_modules/
+venv/
+**/venv/
+.venv/
+env/
+.env
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Data & Models
+data/
+backend/**/models/
+*.h5
+*.pth
+*.joblib
+*.pkl
+
+# Git & IDE
+.git/
+.gitignore
+.vscode/
+.idea/
+.agent/
+
+# Documentation
+docs/
+*.md
+
+# Artifacts & Temp
+artifacts/
+temp/
+tmp/
+.gemini/
+.planning/
+
+# Docker
+docker/
+Dockerfile
+docker-compose.yml

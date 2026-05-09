@@ -1,0 +1,78 @@
+# ============================================================
+# NETRA AI - CONSOLIDATED REQUIREMENTS
+# ============================================================
+# This file contains all Python dependencies for the entire project
+# Used by Docker containers for consistent dependency management
+# ============================================================
+
+# ── CORE API DEPENDENCIES ──────────────────────────────────
+fastapi==0.115.0
+uvicorn[standard]==0.30.1
+websockets>=13.0
+python-dotenv==1.0.0
+httpx>=0.27.0
+requests>=2.31.0
+python-multipart==0.0.9
+pydantic-settings>=2.0.0
+pydantic[email]>=2.0.0
+PyJWT>=2.0.0
+email-validator>=2.0.0
+
+# ── DATABASE & AUTHENTICATION ──────────────────────────────
+supabase>=2.10.0
+sqlalchemy>=2.0.0
+
+# ── VIDEO CONSULTATIONS ────────────────────────────────────
+livekit-api==0.5.1
+
+# ── IMAGE PROCESSING & COMPUTER VISION ─────────────────────
+Pillow>=10.0.0
+numpy>=1.24.0
+opencv-python>=4.8.0
+scikit-learn==1.3.0
+pandas==2.0.3
+matplotlib==3.7.2
+
+# ── MACHINE LEARNING & AI ──────────────────────────────────
+tensorflow>=2.15.0
+mediapipe==0.10.7
+google-generativeai>=0.8.0
+grpcio>=1.60.0  # Required by google-generativeai
+pyparsing<3.0.0  # Fix for google-generativeai httplib2 compatibility
+
+# ── SYSTEM MONITORING & UTILITIES ──────────────────────────
+psutil>=5.9.0
+apscheduler>=3.10.4
+
+# ── PAYMENT INTEGRATION ────────────────────────────────────
+razorpay>=1.4.0
+
+# ── SMS & NOTIFICATIONS ─────────────────────────────────────
+twilio>=9.0.0
+phonenumbers>=8.13.0
+
+# ── AI NURSE & VOICE PROCESSING ────────────────────────────
+faster-whisper>=1.0.0
+# ollama>=0.1.0  # REMOVED: Replaced with Groq API (cloud-based)
+openai>=1.0.0  # For Groq API (OpenAI-compatible)
+
+# ── TEMPLATE ENGINE ─────────────────────────────────────────
+jinja2>=3.1.2
+
+# ── DEVELOPMENT & TESTING ───────────────────────────────────
+# Add testing dependencies here if needed
+# pytest>=7.0.0
+# pytest-asyncio>=0.21.0
+
+# ── SECURITY & RATE LIMITING & EXTRAS ───────────────────────
+slowapi>=0.1.9
+python-magic-bin>=0.4.14; sys_platform == "win32"
+python-magic>=0.4.27; sys_platform != "win32"
+sentry-sdk
+sendgrid>=6.11.0
+
+# ── PHASE 3: REDIS CACHING & ADVANCED EXPORTS ───────────────
+fastapi-redis-cache>=0.2.0
+redis>=5.0.0
+reportlab>=4.0.0
+openpyxl>=3.1.0

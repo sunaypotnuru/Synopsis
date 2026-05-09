@@ -1,0 +1,38 @@
+# ============================================================
+# NETRA AI - MENTAL HEALTH SERVICE REQUIREMENTS
+# ============================================================
+
+# ── CORE API DEPENDENCIES ──────────────────────────────────
+fastapi
+uvicorn[standard]
+python-multipart
+httpx
+jinja2
+pydantic<2.0
+
+# ── IMAGE PROCESSING & COMPUTER VISION ─────────────────────
+Pillow
+numpy<2.0
+opencv-python
+scikit-learn
+pandas
+matplotlib
+albumentations==1.4.0
+grad-cam==1.5.0
+scipy==1.10.1
+
+# ── MACHINE LEARNING & AI ──────────────────────────────────
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.0.0
+torchvision>=0.15.0
+timm>=0.9.0
+tensorflow>=2.12.0
+mediapipe>=0.10.7
+
+# ── AUDIO & VOICE (Whisper) ────────────────────────────────
+faster-whisper>=1.0.0
+ctranslate2>=4.0.0
+transformers
+praat-parselmouth
+soundfile
+librosa

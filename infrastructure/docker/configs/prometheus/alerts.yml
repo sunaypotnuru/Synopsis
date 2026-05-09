@@ -1,0 +1,196 @@
+# Prometheus Alert Rules for Netra AI Compliance Monitoring
+
+groups:
+  # FDA APM Alerts
+  - name: fda_apm_alerts
+    interval: 30s
+    rules:
+      - alert: ModelPerformanceDegraded
+        expr: fda_apm_model_sensitivity < 0.85
+        for: 5m
+        labels:
+          severity: critical
+          component: fda-apm
+        annotations:
+          summary: "AI Model performance degraded"
+          description: "Model {{ $labels.model_name }} sensitivity dropped to {{ $value | humanizePercentage }}"
+
+      - alert: ModelAUCROCLow
+        expr: fda_apm_model_auc_roc < 0.80
+        for: 5m
+        labels:
+          severity: emergency
+          component: fda-apm
+        annotations:
+          summary: "AI Model AUC-ROC critically low"
+          description: "Model {{ $labels.model_name }} AUC-ROC is {{ $value | humanizePercentage }}"
+
+      - alert: DataDriftDetected
+        expr: fda_apm_data_drift_score > 0.3
+        for: 10m
+        labels:
+          severity: warning
+          component: fda-apm
+        annotations:
+          summary: "Data drift detected"
+          description: "Model {{ $labels.model_name }} showing data drift score of {{ $value }}"
+
+      - alert: BiasDetected
+        expr: fda_apm_bias_score > 0.2
+        for: 10m
+        labels:
+          severity: critical
+          component: fda-apm
+        annotations:
+          summary: "Model bias detected"
+          description: "Model {{ $labels.model_name }} showing bias score of {{ $value }}"
+
+      - alert: PredictionLatencyHigh
+        expr: fda_apm_prediction_latency_seconds > 2
+        for: 5m
+        labels:
+          severity: warning
+          component: fda-apm
+        annotations:
+          summary: "High prediction latency"
+          description: "Model {{ $labels.model_name }} latency is {{ $value }}s"
+
+  # System Health Alerts
+  - name: system_health_alerts
+    interval: 30s
+    rules:
+      - alert: HighCPUUsage
+        expr: (100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 80
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is {{ $value | humanizePercentage }} on {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is {{ $value | humanizePercentage }} on {{ $labels.instance }}"
+
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 < 15
+        for: 5m
+        labels:
+          severity: critical
+          component: system
+        annotations:
+          summary: "Low disk space"
+          description: "Only {{ $value | humanizePercentage }} disk space remaining on {{ $labels.instance }}"
+
+      - alert: ServiceDown
+        expr: up == 0
+        for: 2m
+        labels:
+          severity: critical
+          component: system
+        annotations:
+          summary: "Service is down"
+          description: "{{ $labels.job }} on {{ $labels.instance }} is down"
+
+  # Database Alerts
+  - name: database_alerts
+    interval: 30s
+    rules:
+      - alert: DatabaseConnectionsHigh
+        expr: pg_stat_database_numbackends > 80
+        for: 5m
+        labels:
+          severity: warning
+          component: database
+        annotations:
+          summary: "High database connections"
+          description: "Database {{ $labels.datname }} has {{ $value }} active connections"
+
+      - alert: DatabaseSlowQueries
+        expr: rate(pg_stat_statements_mean_exec_time[5m]) > 1000
+        for: 5m
+        labels:
+          severity: warning
+          component: database
+        annotations:
+          summary: "Slow database queries detected"
+          description: "Average query time is {{ $value }}ms"
+
+  # IEC 62304 Alerts
+  - name: iec62304_alerts
+    interval: 60s
+    rules:
+      - alert: TraceabilityCoverageLow
+        expr: iec62304_traceability_coverage_percent < 90
+        for: 10m
+        labels:
+          severity: warning
+          component: iec62304
+        annotations:
+          summary: "Low traceability coverage"
+          description: "Traceability coverage is {{ $value | humanizePercentage }}"
+
+      - alert: TestFailureRateHigh
+        expr: (iec62304_test_failed / iec62304_test_total) * 100 > 5
+        for: 5m
+        labels:
+          severity: critical
+          component: iec62304
+        annotations:
+          summary: "High test failure rate"
+          description: "Test failure rate is {{ $value | humanizePercentage }}"
+
+  # SOC 2 Alerts
+  - name: soc2_alerts
+    interval: 60s
+    rules:
+      - alert: SOC2ComplianceLow
+        expr: soc2_compliance_score_percent < 85
+        for: 10m
+        labels:
+          severity: warning
+          component: soc2
+        annotations:
+          summary: "SOC 2 compliance score low"
+          description: "SOC 2 compliance score is {{ $value | humanizePercentage }}"
+
+      - alert: EvidenceCollectionFailed
+        expr: increase(soc2_evidence_collection_failures_total[1h]) > 5
+        for: 5m
+        labels:
+          severity: warning
+          component: soc2
+        annotations:
+          summary: "Evidence collection failures"
+          description: "{{ $value }} evidence collection failures in the last hour"
+
+  # API Performance Alerts
+  - name: api_performance_alerts
+    interval: 30s
+    rules:
+      - alert: HighAPILatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+          component: api
+        annotations:
+          summary: "High API latency"
+          description: "95th percentile latency is {{ $value }}s for {{ $labels.endpoint }}"
+
+      - alert: HighAPIErrorRate
+        expr: (rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m])) * 100 > 5
+        for: 5m
+        labels:
+          severity: critical
+          component: api
+        annotations:
+          summary: "High API error rate"
+          description: "Error rate is {{ $value | humanizePercentage }} for {{ $labels.endpoint }}"

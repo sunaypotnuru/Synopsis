@@ -1,0 +1,114 @@
+# Prometheus Configuration for Netra AI Compliance Monitoring
+# Scrapes metrics from FDA APM, IEC 62304, SOC 2 services and system metrics
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'netra-ai-production'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - "alerts.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # FDA APM Service metrics
+  - job_name: 'fda-apm-service'
+    scrape_interval: 10s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['fda-apm-service:8010']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'fda-apm-service'
+
+  # IEC 62304 Service metrics
+  - job_name: 'iec62304-service'
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['iec62304-service:8011']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'iec62304-service'
+
+  # SOC 2 Service metrics
+  - job_name: 'soc2-service'
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['soc2-service:8012']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'soc2-service'
+
+  # Node Exporter for system metrics
+  - job_name: 'node-exporter'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['node-exporter:9100']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'netra-ai-server'
+
+  # TimescaleDB metrics (if postgres_exporter is configured)
+  - job_name: 'timescaledb'
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['timescaledb:9187']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'timescaledb'
+
+  # Web application metrics (if instrumented)
+  - job_name: 'web-app'
+    scrape_interval: 15s
+    metrics_path: '/api/metrics'
+    static_configs:
+      - targets: ['web-app:3000']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'web-app'
+
+  # FHIR Server metrics (if instrumented)
+  - job_name: 'fhir-server'
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['fhir-server:3002']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'fhir-server'
+
+# Remote write configuration for long-term storage (optional)
+# remote_write:
+#   - url: "http://timescaledb:5432/write"
+#     queue_config:
+#       capacity: 10000
+#       max_shards: 5
+#       min_shards: 1
+#       max_samples_per_send: 1000
+#       batch_send_deadline: 5s
+#       min_backoff: 30ms
+#       max_backoff: 100ms

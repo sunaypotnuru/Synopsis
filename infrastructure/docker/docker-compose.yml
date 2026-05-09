@@ -1,0 +1,288 @@
+networks:
+  netra-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+    driver: local
+
+services:
+  # Redis Cache Service
+  redis:
+    image: redis:7-alpine
+    container_name: netra-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - netra-network
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ../../backend/core
+      dockerfile: Dockerfile
+    container_name: netra-backend
+    ports:
+      - "8000:7860"
+    volumes:
+      - ../../backend/core:/app
+    env_file:
+      - .env
+    environment:
+      - ANEMIA_API_URL=http://anemia-service:7860
+      - DR_API_URL=http://diabetic-retinopathy:7860
+      - MENTAL_HEALTH_API_URL=http://mental-health:7860
+      - PARKINSONS_API_URL=http://parkinsons-voice:7860
+      - CATARACT_API_URL=http://cataract:7860
+      - CHATBOT_API_URL=http://mental-health-chatbot:7860
+      - EMERGENCY_API_URL=http://emergency-services:7860
+      - LIBRETRANSLATE_URL=http://libretranslate:5000
+      - REDIS_URL=redis://redis:6379
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
+      - BYPASS_AUTH=${BYPASS_AUTH:-false}
+      - PYTHONUNBUFFERED=1
+    networks:
+      - netra-network
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:7860/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+      args:
+        # VITE_ vars MUST be passed as build args — Vite bakes them into JS at build time
+        - VITE_API_URL=http://localhost:8000
+        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+        - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+        - VITE_LIVEKIT_URL=${VITE_LIVEKIT_URL}
+        - VITE_BYPASS_AUTH=${VITE_BYPASS_AUTH:-false}
+        - VITE_GOOGLE_MAPS_API_KEY=${VITE_GOOGLE_MAPS_API_KEY}
+    container_name: netra-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - netra-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  anemia-service:
+    build:
+      context: ../../backend/services/anemia
+      dockerfile: Dockerfile
+    container_name: netra-anemia-service
+    ports:
+      - "8001:7860"
+    volumes:
+      - ../../backend/services/anemia/models:/app/models:ro
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:7860/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  mental-health:
+    build:
+      context: ../../backend/services/mental-health
+      dockerfile: Dockerfile
+    container_name: netra-mental-health
+    ports:
+      - "8003:7860"
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:7860/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  # Diabetic Retinopathy Detection Service
+  diabetic-retinopathy:
+    build:
+      context: ../../backend/services/diabetic-retinopathy
+      dockerfile: Dockerfile
+    container_name: netra-diabetic-retinopathy
+    ports:
+      - "8002:7860"
+    volumes:
+      - ../../backend/services/diabetic-retinopathy/models:/app/models:ro
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:7860/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  # Cataract Detection Service
+  cataract:
+    build:
+      context: ../../backend/services/cataract
+      dockerfile: Dockerfile
+    container_name: netra-cataract
+    ports:
+      - "8005:7860"
+    volumes:
+      - ../../backend/services/cataract/models:/app/models:ro
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:7860/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  # Parkinson's Voice Detection Service
+  parkinsons-voice:
+    build:
+      context: ../../backend/services/parkinsons-voice
+      dockerfile: Dockerfile
+    container_name: netra-parkinsons-voice
+    ports:
+      - "8004:7860"
+    volumes:
+      - ../../backend/services/parkinsons-voice/models:/app/models:ro
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:7860/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  # Mental Health Chatbot Service
+  mental-health-chatbot:
+    build:
+      context: ../../backend/services/mental-health-chatbot
+      dockerfile: Dockerfile
+    container_name: netra-mental-health-chatbot
+    ports:
+      - "8006:7860"
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OLLAMA_URL=http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:7860/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  # Emergency Services API
+  emergency-services:
+    build:
+      context: ../../backend/services/emergency-services
+      dockerfile: Dockerfile
+    container_name: netra-emergency-services
+    ports:
+      - "8007:7860"
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:7860/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  # LibreTranslate Service (for i18n translation)
+  libretranslate:
+    image: libretranslate/libretranslate:latest
+    container_name: netra-libretranslate
+    ports:
+      - "5000:5000"
+    networks:
+      - netra-network
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:5000/languages')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+  # MCP Server - Clinical Diagnostic Engine
+  mcp-server:
+    build:
+      context: ../../backend/mcp-server
+      dockerfile: Dockerfile
+    container_name: netra-mcp-server
+    ports:
+      - "8080:7860"
+    volumes:
+      - ../../backend/mcp-server:/app
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SERVER_URL=http://localhost:7860
+      - MCP_SERVER_NAME=NetraAI Diagnostic Engine
+      - MCP_SERVER_VERSION=2.0.0
+    networks:
+      - netra-network
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:7860/health')\" || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+    depends_on:
+      - backend

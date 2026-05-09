@@ -1,0 +1,65 @@
+# Inference Configuration for Anemia Detection Model
+
+# Model Configuration
+model:
+  checkpoint_path: "checkpoints/best_model.pt"
+  device: "cuda"  # cuda or cpu
+  
+# Preprocessing
+preprocessing:
+  image_size: 224
+  normalize_mean: [0.485, 0.456, 0.406]
+  normalize_std: [0.229, 0.224, 0.225]
+  
+  # ROI extraction
+  roi_extraction:
+    conjunctiva:
+      method: "color_based"
+      hsv_lower: [0, 30, 30]
+      hsv_upper: [20, 255, 255]
+    
+    fingernail:
+      method: "triangle_threshold"
+      morphology_kernel_size: 5
+      min_area: 1000
+
+# Prediction Thresholds
+thresholds:
+  classification: 0.5  # Probability threshold for anemia classification
+  
+  # Hemoglobin level ranges (g/dL)
+  hemoglobin:
+    min: 5.0
+    max: 18.0
+    anemia_threshold: 12.0  # Below this is considered anemic
+
+# Output Configuration
+output:
+  save_visualizations: true
+  visualization_dir: "results/visualizations"
+  save_predictions: true
+  predictions_file: "results/predictions.csv"
+  
+  # What to include in output
+  include:
+    probability: true
+    hemoglobin_level: true
+    modality: true
+    confidence: true
+    roi_image: false
+
+# Batch Inference
+batch:
+  batch_size: 16
+  num_workers: 2
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_file: "logs/inference.log"
+  console_output: true
+
+# Performance
+performance:
+  max_inference_time: 2.0  # seconds per image
+  memory_limit: 500  # MB

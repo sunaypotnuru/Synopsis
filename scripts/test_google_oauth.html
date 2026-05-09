@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Google OAuth - NetraAI</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .user-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .user-info img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        #buttonDiv {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Test Google OAuth</h1>
+        <p>This test verifies your Google OAuth configuration for NetraAI.</p>
+        
+        <div class="status info">
+            ℹ️ Click the button below to test Google Sign-In
+        </div>
+
+        <div id="buttonDiv"></div>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Your Google Client ID from .env
+        const CLIENT_ID = '150007234181-836drtolqridvcs2ammd7k9gk9022dk4.apps.googleusercontent.com';
+
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            
+            // Decode JWT token (simple base64 decode)
+            const base64Url = response.credential.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            const user = JSON.parse(jsonPayload);
+            
+            // Show success
+            document.getElementById('result').innerHTML = `
+                <div class="status success">
+                    ✅ Google OAuth is working correctly!
+                </div>
+                <div class="user-info">
+                    <h3>User Information:</h3>
+                    <p><img src="${user.picture}" width="50" height="50" alt="Profile"> <strong>${user.name}</strong></p>
+                    <p>📧 Email: ${user.email}</p>
+                    <p>✅ Email Verified: ${user.email_verified}</p>
+                    <p>🆔 User ID: ${user.sub}</p>
+                </div>
+                <div class="status success">
+                    <strong>✅ TEST PASSED</strong><br>
+                    Your Google OAuth is configured correctly and ready for production!
+                </div>
+            `;
+        }
+
+        function handleError(error) {
+            document.getElementById('result').innerHTML = `
+                <div class="status error">
+                    ❌ Google OAuth Error<br>
+                    ${error.message || 'Unknown error'}
+                </div>
+                <div class="info">
+                    <strong>Troubleshooting:</strong><br>
+                    1. Check if Client ID is correct in .env<br>
+                    2. Verify OAuth consent screen is configured<br>
+                    3. Check authorized redirect URIs in Google Console<br>
+                    4. Make sure you're accessing via http://localhost (not file://)
+                </div>
+            `;
+        }
+
+        window.onload = function () {
+            try {
+                google.accounts.id.initialize({
+                    client_id: CLIENT_ID,
+                    callback: handleCredentialResponse
+                });
+                
+                google.accounts.id.renderButton(
+                    document.getElementById("buttonDiv"),
+                    { 
+                        theme: "outline", 
+                        size: "large",
+                        text: "signin_with",
+                        width: 250
+                    }
+                );
+                
+                console.log('Google Sign-In initialized successfully');
+            } catch (error) {
+                handleError(error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+{
+  "name": "NetraAI Prior Authorization Agent",
+  "description": "AI-powered prior authorization automation agent that extracts clinical evidence from diagnostic results and generates complete prior auth packets. Reduces processing time by 80% and handles the $31B annual prior auth burden.",
+  "version": "1.0.0",
+  "icon_url": "https://netra-ai.com/assets/logo-agent.png",
+  "supported_interfaces": [
+    {
+      "protocol_binding": "JSONRPC",
+      "url": "http://localhost:8081"
+    },
+    {
+      "protocol_binding": "HTTP+JSON",
+      "url": "http://localhost:8081/api/v1"
+    }
+  ],
+  "capabilities": {
+    "streaming": true,
+    "extended_agent_card": true,
+    "multi_turn": true,
+    "push_notifications": false
+  },
+  "default_input_modes": ["application/json", "text/plain"],
+  "default_output_modes": ["application/json", "text/plain"],
+  "skills": [
+    {
+      "id": "prior_authorization_automation",
+      "name": "Prior Authorization Automation",
+      "description": "Automates the complete prior authorization workflow by extracting clinical evidence from diagnostic results, matching payer requirements, and generating submission-ready prior auth packets.",
+      "tags": ["prior-auth", "healthcare", "automation", "clinical-evidence", "payer-requirements"],
+      "examples": [
+        "Generate prior authorization for diabetic retinopathy screening for patient ID 12345",
+        "Create prior auth packet for cataract surgery based on diagnostic results",
+        "Extract clinical evidence for anemia treatment authorization",
+        "Process prior auth for mental health services with diagnostic support"
+      ],
+      "input_modes": ["application/json"],
+      "output_modes": ["application/json"],
+      "security_requirements": {
+        "authentication": "required",
+        "authorization": "patient_scoped"
+      }
+    },
+    {
+      "id": "clinical_evidence_extraction",
+      "name": "Clinical Evidence Extraction",
+      "description": "Extracts and structures clinical evidence from diagnostic results, lab reports, and imaging studies to support prior authorization requests.",
+      "tags": ["clinical-evidence", "diagnostics", "fhir", "structured-data"],
+      "examples": [
+        "Extract hemoglobin levels and anemia severity from diagnostic results",
+        "Structure diabetic retinopathy findings for insurance submission",
+        "Compile mental health assessment scores for treatment authorization"
+      ],
+      "input_modes": ["application/json"],
+      "output_modes": ["application/json"]
+    },
+    {
+      "id": "payer_requirements_matching",
+      "name": "Payer Requirements Matching",
+      "description": "Matches patient clinical data against specific payer requirements and criteria for various medical services and treatments.",
+      "tags": ["payer-criteria", "insurance", "requirements-matching", "eligibility"],
+      "examples": [
+        "Check if patient meets Medicare criteria for diabetic retinopathy screening",
+        "Validate insurance requirements for cataract surgery authorization",
+        "Match clinical findings to Medicaid prior auth criteria"
+      ],
+      "input_modes": ["application/json"],
+      "output_modes": ["application/json"]
+    },
+    {
+      "id": "multi_diagnostic_coordination",
+      "name": "Multi-Diagnostic Coordination",
+      "description": "Coordinates multiple diagnostic tools (anemia, cataract, DR, mental health, Parkinson's) to build comprehensive clinical pictures for complex prior authorization cases.",
+      "tags": ["multi-modal", "coordination", "comprehensive-assessment", "workflow-orchestration"],
+      "examples": [
+        "Run comprehensive screening workflow for elderly patient",
+        "Coordinate multiple diagnostics for complex medical case",
+        "Orchestrate screening battery for prior auth evidence"
+      ],
+      "input_modes": ["application/json"],
+      "output_modes": ["application/json"]
+    },
+    {
+      "id": "fhir_integration",
+      "name": "FHIR Integration",
+      "description": "Integrates with FHIR R4 compliant systems to retrieve patient data and store diagnostic results in standardized healthcare formats.",
+      "tags": ["fhir-r4", "interoperability", "healthcare-standards", "ehr-integration"],
+      "examples": [
+        "Retrieve patient demographics and medical history from FHIR server",
+        "Store diagnostic results as FHIR DiagnosticReport resources",
+        "Query patient timeline for prior authorization context"
+      ],
+      "input_modes": ["application/json"],
+      "output_modes": ["application/json"]
+    }
+  ],
+  "security_schemes": {
+    "oauth2": {
+      "type": "oauth2",
+      "flows": {
+        "authorization_code": {
+          "authorization_url": "https://auth.netra-ai.com/oauth/authorize",
+          "token_url": "https://auth.netra-ai.com/oauth/token",
+          "scopes": {
+            "patient:read": "Read patient data",
+            "patient:write": "Write diagnostic results",
+            "prior_auth:create": "Create prior authorization requests"
+          }
+        }
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-API-Key"
+    }
+  },
+  "contact": {
+    "name": "NetraAI Support",
+    "email": "support@netra-ai.com",
+    "url": "https://netra-ai.com/support"
+  },
+  "license": {
+    "name": "MIT",
+    "url": "https://opensource.org/licenses/MIT"
+  },
+  "terms_of_service": "https://netra-ai.com/terms",
+  "privacy_policy": "https://netra-ai.com/privacy",
+  "documentation": "https://docs.netra-ai.com/a2a-agent",
+  "metadata": {
+    "healthcare_compliance": {
+      "hipaa_compliant": true,
+      "fhir_r4_compliant": true,
+      "synthetic_data_only": true
+    },
+    "performance": {
+      "avg_response_time_ms": 2500,
+      "success_rate": 0.98,
+      "uptime": 0.999
+    },
+    "supported_payers": [
+      "Medicare",
+      "Medicaid",
+      "Aetna",
+      "Blue Cross Blue Shield",
+      "UnitedHealthcare",
+      "Cigna",
+      "Humana"
+    ],
+    "supported_services": [
+      "Diabetic Retinopathy Screening",
+      "Cataract Surgery",
+      "Anemia Treatment",
+      "Mental Health Services",
+      "Neurological Assessment"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+    "model": "anemia-v1",
+    "image_path": "images/dummy_eye.png",
+    "metadata": {
+        "device": "iPhone 13",
+        "lighting": "Natural"
+    }
+}

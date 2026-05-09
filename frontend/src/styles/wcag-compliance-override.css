@@ -1,0 +1,68 @@
+
+/* Ultimate WCAG 2.2 Level AA Compliance Overrides */
+
+/* Ensure all focus indicators are visible and meet 3:1 contrast ratio */
+*:focus {
+    outline: 2px solid #005fcc !important;
+    outline-offset: 2px !important;
+}
+
+*:focus-visible {
+    outline: 2px solid #005fcc !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 4px rgba(0, 95, 204, 0.25) !important;
+}
+
+/* Override Tailwind's focus:outline-none when not paired with focus:ring */
+.focus\:outline-none:focus:not(.focus\:ring-1):not(.focus\:ring-2):not(.focus\:ring-4):not(.focus\:ring) {
+    outline: 2px solid #005fcc !important;
+    outline-offset: 2px !important;
+}
+
+/* Ensure clickable divs have proper focus indicators */
+div[role="button"]:focus,
+div[role="link"]:focus,
+div[onclick]:focus {
+    outline: 2px solid #005fcc !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 4px rgba(0, 95, 204, 0.25) !important;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    *:focus,
+    *:focus-visible {
+        outline: 3px solid currentColor !important;
+        outline-offset: 2px !important;
+    }
+}
+
+/* Dark mode focus indicators */
+@media (prefers-color-scheme: dark) {
+    *:focus,
+    *:focus-visible {
+        outline-color: #60a5fa !important;
+        box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.25) !important;
+    }
+}
+
+/* Ensure keyboard navigation is always visible */
+[tabindex="0"]:focus,
+[tabindex="-1"]:focus {
+    outline: 2px solid #005fcc !important;
+    outline-offset: 2px !important;
+}
+
+/* WCAG 2.2 Success Criterion 2.4.7 Focus Visible compliance */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus,
+[role="button"]:focus,
+[role="link"]:focus,
+[role="tab"]:focus,
+[role="menuitem"]:focus {
+    outline: 2px solid #005fcc !important;
+    outline-offset: 2px !important;
+}

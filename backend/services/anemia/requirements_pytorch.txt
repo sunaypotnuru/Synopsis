@@ -1,0 +1,26 @@
+# PyTorch Anemia Detection Model Requirements
+# Core Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Computer Vision
+opencv-python>=4.8.0
+Pillow>=10.0.0
+
+# Model Libraries
+timm>=0.9.5  # For EfficientNetV2 backbone
+
+# Face Detection and Validation
+mediapipe>=0.10.0
+
+# Data Processing
+numpy>=1.24.0
+
+# Configuration
+pyyaml>=6.0
+
+# Existing dependencies (keep for compatibility)
+fastapi
+uvicorn
+python-multipart
+httpx

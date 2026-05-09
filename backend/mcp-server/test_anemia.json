@@ -1,0 +1,7 @@
+{
+  "name": "diagnose_anemia_tool",
+  "arguments": {
+    "image_url": "https://raw.githubusercontent.com/Aakash-S-O/Anemia-Detection/main/demo_images/conjunctiva_1.jpg",
+    "patient_id": "TEST-P-001"
+  }
+}

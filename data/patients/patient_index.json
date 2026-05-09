@@ -1,0 +1,472 @@
+{
+  "generated_at": "2026-05-06T22:15:55.797426",
+  "total_patients": 40,
+  "cohorts": {
+    "anemia_patients": 10,
+    "diabetes_patients": 10,
+    "elderly_patients": 10,
+    "general_patients": 10
+  },
+  "patients": [
+    {
+      "id": "patient-f67e52c9",
+      "cohort": "anemia_patients",
+      "file": "synthetic_patients\\anemia_patients\\patient-f67e52c9.json",
+      "name": "Sarah Johnson",
+      "gender": "female",
+      "age": 34,
+      "birthDate": "1992-05-14",
+      "conditions": [
+        "Anemia"
+      ]
+    },
+    {
+      "id": "patient-dbc07a62",
+      "cohort": "anemia_patients",
+      "file": "synthetic_patients\\anemia_patients\\patient-dbc07a62.json",
+      "name": "Maria Garcia",
+      "gender": "female",
+      "age": 28,
+      "birthDate": "1998-05-13",
+      "conditions": [
+        "Anemia"
+      ]
+    },
+    {
+      "id": "patient-336a50aa",
+      "cohort": "anemia_patients",
+      "file": "synthetic_patients\\anemia_patients\\patient-336a50aa.json",
+      "name": "Jennifer Davis",
+      "gender": "female",
+      "age": 42,
+      "birthDate": "1984-05-16",
+      "conditions": [
+        "Anemia"
+      ]
+    },
+    {
+      "id": "patient-fc106a2c",
+      "cohort": "anemia_patients",
+      "file": "synthetic_patients\\anemia_patients\\patient-fc106a2c.json",
+      "name": "Lisa Wilson",
+      "gender": "female",
+      "age": 31,
+      "birthDate": "1995-05-14",
+      "conditions": [
+        "Anemia"
+      ]
+    },
+    {
+      "id": "patient-6aee2ae4",
+      "cohort": "anemia_patients",
+      "file": "synthetic_patients\\anemia_patients\\patient-6aee2ae4.json",
+      "name": "Amanda Brown",
+      "gender": "female",
+      "age": 39,
+      "birthDate": "1987-05-16",
+      "conditions": [
+        "Anemia"
+      ]
+    },
+    {
+      "id": "patient-5467e6e8",
+      "cohort": "anemia_patients",
+      "file": "synthetic_patients\\anemia_patients\\patient-5467e6e8.json",
+      "name": "Michael Smith",
+      "gender": "male",
+      "age": 45,
+      "birthDate": "1981-05-17",
+      "conditions": [
+        "Anemia"
+      ]
+    },
+    {
+      "id": "patient-16d8f37c",
+      "cohort": "anemia_patients",
+      "file": "synthetic_patients\\anemia_patients\\patient-16d8f37c.json",
+      "name": "David Miller",
+      "gender": "male",
+      "age": 52,
+      "birthDate": "1974-05-19",
+      "conditions": [
+        "Anemia"
+      ]
+    },
+    {
+      "id": "patient-f85dcdab",
+      "cohort": "anemia_patients",
+      "file": "synthetic_patients\\anemia_patients\\patient-f85dcdab.json",
+      "name": "Robert Jones",
+      "gender": "male",
+      "age": 38,
+      "birthDate": "1988-05-15",
+      "conditions": [
+        "Anemia"
+      ]
+    },
+    {
+      "id": "patient-7ae9427b",
+      "cohort": "anemia_patients",
+      "file": "synthetic_patients\\anemia_patients\\patient-7ae9427b.json",
+      "name": "James Taylor",
+      "gender": "male",
+      "age": 41,
+      "birthDate": "1985-05-16",
+      "conditions": [
+        "Anemia"
+      ]
+    },
+    {
+      "id": "patient-86f0f39b",
+      "cohort": "anemia_patients",
+      "file": "synthetic_patients\\anemia_patients\\patient-86f0f39b.json",
+      "name": "Christopher Lee",
+      "gender": "male",
+      "age": 47,
+      "birthDate": "1979-05-18",
+      "conditions": [
+        "Anemia"
+      ]
+    },
+    {
+      "id": "patient-bad58be4",
+      "cohort": "diabetes_patients",
+      "file": "synthetic_patients\\diabetes_patients\\patient-bad58be4.json",
+      "name": "Patricia Martinez",
+      "gender": "female",
+      "age": 58,
+      "birthDate": "1968-05-20",
+      "conditions": [
+        "Diabetes mellitus type 2"
+      ]
+    },
+    {
+      "id": "patient-f9e0d749",
+      "cohort": "diabetes_patients",
+      "file": "synthetic_patients\\diabetes_patients\\patient-f9e0d749.json",
+      "name": "Linda Anderson",
+      "gender": "female",
+      "age": 62,
+      "birthDate": "1964-05-21",
+      "conditions": [
+        "Diabetes mellitus type 2"
+      ]
+    },
+    {
+      "id": "patient-97338c5c",
+      "cohort": "diabetes_patients",
+      "file": "synthetic_patients\\diabetes_patients\\patient-97338c5c.json",
+      "name": "Barbara Thomas",
+      "gender": "female",
+      "age": 55,
+      "birthDate": "1971-05-20",
+      "conditions": [
+        "Diabetes mellitus type 2"
+      ]
+    },
+    {
+      "id": "patient-b89b6997",
+      "cohort": "diabetes_patients",
+      "file": "synthetic_patients\\diabetes_patients\\patient-b89b6997.json",
+      "name": "Susan Jackson",
+      "gender": "female",
+      "age": 61,
+      "birthDate": "1965-05-21",
+      "conditions": [
+        "Diabetes mellitus type 2"
+      ]
+    },
+    {
+      "id": "patient-69d3f32f",
+      "cohort": "diabetes_patients",
+      "file": "synthetic_patients\\diabetes_patients\\patient-69d3f32f.json",
+      "name": "Karen White",
+      "gender": "female",
+      "age": 59,
+      "birthDate": "1967-05-21",
+      "conditions": [
+        "Diabetes mellitus type 2"
+      ]
+    },
+    {
+      "id": "patient-9f708678",
+      "cohort": "diabetes_patients",
+      "file": "synthetic_patients\\diabetes_patients\\patient-9f708678.json",
+      "name": "William Harris",
+      "gender": "male",
+      "age": 64,
+      "birthDate": "1962-05-22",
+      "conditions": [
+        "Diabetes mellitus type 2"
+      ]
+    },
+    {
+      "id": "patient-0fd84a4f",
+      "cohort": "diabetes_patients",
+      "file": "synthetic_patients\\diabetes_patients\\patient-0fd84a4f.json",
+      "name": "Richard Martin",
+      "gender": "male",
+      "age": 57,
+      "birthDate": "1969-05-20",
+      "conditions": [
+        "Diabetes mellitus type 2"
+      ]
+    },
+    {
+      "id": "patient-04324c91",
+      "cohort": "diabetes_patients",
+      "file": "synthetic_patients\\diabetes_patients\\patient-04324c91.json",
+      "name": "Charles Thompson",
+      "gender": "male",
+      "age": 63,
+      "birthDate": "1963-05-22",
+      "conditions": [
+        "Diabetes mellitus type 2"
+      ]
+    },
+    {
+      "id": "patient-a0e07410",
+      "cohort": "diabetes_patients",
+      "file": "synthetic_patients\\diabetes_patients\\patient-a0e07410.json",
+      "name": "Thomas Garcia",
+      "gender": "male",
+      "age": 60,
+      "birthDate": "1966-05-21",
+      "conditions": [
+        "Diabetes mellitus type 2"
+      ]
+    },
+    {
+      "id": "patient-4b6125aa",
+      "cohort": "diabetes_patients",
+      "file": "synthetic_patients\\diabetes_patients\\patient-4b6125aa.json",
+      "name": "Daniel Rodriguez",
+      "gender": "male",
+      "age": 56,
+      "birthDate": "1970-05-20",
+      "conditions": [
+        "Diabetes mellitus type 2"
+      ]
+    },
+    {
+      "id": "patient-24b2ad4c",
+      "cohort": "elderly_patients",
+      "file": "synthetic_patients\\elderly_patients\\patient-24b2ad4c.json",
+      "name": "Dorothy Lewis",
+      "gender": "female",
+      "age": 72,
+      "birthDate": "1954-05-24",
+      "conditions": [
+        "Cataract"
+      ]
+    },
+    {
+      "id": "patient-f09e6fbc",
+      "cohort": "elderly_patients",
+      "file": "synthetic_patients\\elderly_patients\\patient-f09e6fbc.json",
+      "name": "Helen Walker",
+      "gender": "female",
+      "age": 68,
+      "birthDate": "1958-05-23",
+      "conditions": [
+        "Cataract"
+      ]
+    },
+    {
+      "id": "patient-f837f8dc",
+      "cohort": "elderly_patients",
+      "file": "synthetic_patients\\elderly_patients\\patient-f837f8dc.json",
+      "name": "Betty Hall",
+      "gender": "female",
+      "age": 75,
+      "birthDate": "1951-05-25",
+      "conditions": [
+        "Cataract"
+      ]
+    },
+    {
+      "id": "patient-4f78ef70",
+      "cohort": "elderly_patients",
+      "file": "synthetic_patients\\elderly_patients\\patient-4f78ef70.json",
+      "name": "Ruth Allen",
+      "gender": "female",
+      "age": 71,
+      "birthDate": "1955-05-24",
+      "conditions": [
+        "Cataract"
+      ]
+    },
+    {
+      "id": "patient-1df6fe1f",
+      "cohort": "elderly_patients",
+      "file": "synthetic_patients\\elderly_patients\\patient-1df6fe1f.json",
+      "name": "Virginia Young",
+      "gender": "female",
+      "age": 69,
+      "birthDate": "1957-05-23",
+      "conditions": [
+        "Cataract"
+      ]
+    },
+    {
+      "id": "patient-d2ee04e6",
+      "cohort": "elderly_patients",
+      "file": "synthetic_patients\\elderly_patients\\patient-d2ee04e6.json",
+      "name": "Frank King",
+      "gender": "male",
+      "age": 74,
+      "birthDate": "1952-05-24",
+      "conditions": [
+        "Cataract"
+      ]
+    },
+    {
+      "id": "patient-6dc623b5",
+      "cohort": "elderly_patients",
+      "file": "synthetic_patients\\elderly_patients\\patient-6dc623b5.json",
+      "name": "George Wright",
+      "gender": "male",
+      "age": 70,
+      "birthDate": "1956-05-23",
+      "conditions": [
+        "Cataract"
+      ]
+    },
+    {
+      "id": "patient-a68cee5b",
+      "cohort": "elderly_patients",
+      "file": "synthetic_patients\\elderly_patients\\patient-a68cee5b.json",
+      "name": "Harold Lopez",
+      "gender": "male",
+      "age": 73,
+      "birthDate": "1953-05-24",
+      "conditions": [
+        "Cataract"
+      ]
+    },
+    {
+      "id": "patient-c3d1ceac",
+      "cohort": "elderly_patients",
+      "file": "synthetic_patients\\elderly_patients\\patient-c3d1ceac.json",
+      "name": "Raymond Hill",
+      "gender": "male",
+      "age": 67,
+      "birthDate": "1959-05-23",
+      "conditions": [
+        "Cataract"
+      ]
+    },
+    {
+      "id": "patient-9132485d",
+      "cohort": "elderly_patients",
+      "file": "synthetic_patients\\elderly_patients\\patient-9132485d.json",
+      "name": "Arthur Scott",
+      "gender": "male",
+      "age": 76,
+      "birthDate": "1950-05-25",
+      "conditions": [
+        "Cataract"
+      ]
+    },
+    {
+      "id": "patient-10d925cf",
+      "cohort": "general_patients",
+      "file": "synthetic_patients\\general_patients\\patient-10d925cf.json",
+      "name": "Emily Chen",
+      "gender": "female",
+      "age": 29,
+      "birthDate": "1997-05-13",
+      "conditions": []
+    },
+    {
+      "id": "patient-88778771",
+      "cohort": "general_patients",
+      "file": "synthetic_patients\\general_patients\\patient-88778771.json",
+      "name": "Jessica Rodriguez",
+      "gender": "female",
+      "age": 33,
+      "birthDate": "1993-05-14",
+      "conditions": []
+    },
+    {
+      "id": "patient-7bc64345",
+      "cohort": "general_patients",
+      "file": "synthetic_patients\\general_patients\\patient-7bc64345.json",
+      "name": "Ashley Kim",
+      "gender": "female",
+      "age": 26,
+      "birthDate": "2000-05-12",
+      "conditions": []
+    },
+    {
+      "id": "patient-024e8e42",
+      "cohort": "general_patients",
+      "file": "synthetic_patients\\general_patients\\patient-024e8e42.json",
+      "name": "Stephanie Patel",
+      "gender": "female",
+      "age": 31,
+      "birthDate": "1995-05-14",
+      "conditions": []
+    },
+    {
+      "id": "patient-9302b600",
+      "cohort": "general_patients",
+      "file": "synthetic_patients\\general_patients\\patient-9302b600.json",
+      "name": "Michelle Wong",
+      "gender": "female",
+      "age": 35,
+      "birthDate": "1991-05-15",
+      "conditions": []
+    },
+    {
+      "id": "patient-b91e1098",
+      "cohort": "general_patients",
+      "file": "synthetic_patients\\general_patients\\patient-b91e1098.json",
+      "name": "Kevin Johnson",
+      "gender": "male",
+      "age": 32,
+      "birthDate": "1994-05-14",
+      "conditions": []
+    },
+    {
+      "id": "patient-7f2e9845",
+      "cohort": "general_patients",
+      "file": "synthetic_patients\\general_patients\\patient-7f2e9845.json",
+      "name": "Brian Williams",
+      "gender": "male",
+      "age": 28,
+      "birthDate": "1998-05-13",
+      "conditions": []
+    },
+    {
+      "id": "patient-5a662a7b",
+      "cohort": "general_patients",
+      "file": "synthetic_patients\\general_patients\\patient-5a662a7b.json",
+      "name": "Jason Davis",
+      "gender": "male",
+      "age": 30,
+      "birthDate": "1996-05-13",
+      "conditions": []
+    },
+    {
+      "id": "patient-daa418a7",
+      "cohort": "general_patients",
+      "file": "synthetic_patients\\general_patients\\patient-daa418a7.json",
+      "name": "Ryan Miller",
+      "gender": "male",
+      "age": 34,
+      "birthDate": "1992-05-14",
+      "conditions": []
+    },
+    {
+      "id": "patient-139039e7",
+      "cohort": "general_patients",
+      "file": "synthetic_patients\\general_patients\\patient-139039e7.json",
+      "name": "Andrew Wilson",
+      "gender": "male",
+      "age": 27,
+      "birthDate": "1999-05-13",
+      "conditions": []
+    }
+  ]
+}

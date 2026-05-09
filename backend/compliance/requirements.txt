@@ -1,0 +1,68 @@
+# SOC 2 & IEC 62304 Compliance Services Dependencies
+# Core framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+
+# Database
+psycopg2-binary==2.9.9
+asyncpg==0.29.0
+sqlalchemy==2.0.23
+
+# GitHub integration
+PyGithub==1.59.1
+gitpython==3.1.40
+
+# AWS integration
+boto3==1.34.0
+botocore==1.34.0
+
+# HTTP client
+httpx==0.25.2
+requests==2.31.0
+
+# Data processing
+pandas==2.0.3
+numpy==1.24.3
+
+# File handling
+openpyxl==3.1.2
+xlsxwriter==3.1.9
+
+# Configuration
+python-dotenv==1.0.0
+pyyaml==6.0.1
+
+# Logging
+structlog==23.2.0
+
+# Validation
+marshmallow==3.20.1
+
+# Date/time handling
+python-dateutil==2.8.2
+
+# CSV handling
+csv-diff==1.0
+
+# JSON handling
+jsonschema==4.20.0
+
+# Template engine
+jinja2==3.1.2
+
+# Cryptography
+cryptography==41.0.8
+
+# Testing (for development)
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+
+# Development tools
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+
+# Compliance frameworks
+# Custom compliance libraries would go here

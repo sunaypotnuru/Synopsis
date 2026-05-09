@@ -1,0 +1,52 @@
+# SOC 2 Evidence Collection Service Dockerfile
+FROM python:3.11-slim
+
+LABEL maintainer="NetraAI Team <dev@netraai.com>"
+LABEL description="SOC 2 Automated Evidence Collection Service"
+LABEL version="2.0.0"
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libpq-dev \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Create directories for evidence storage
+RUN mkdir -p /app/soc2-evidence/{policies-procedures,system-configurations,logs-reports,records,artifacts}
+
+# Create non-root user for security
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+RUN chown -R appuser:appuser /app
+USER appuser
+
+# Expose port
+EXPOSE 8012
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8012/health || exit 1
+
+# Environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8012
+ENV SERVICE_NAME=soc2-evidence-collector
+ENV EVIDENCE_DIR=/app/soc2-evidence
+
+# Run the application
+CMD ["python", "-m", "uvicorn", "soc2-api:app", "--host", "0.0.0.0", "--port", "8012", "--workers", "2"]

@@ -1,0 +1,477 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# Netra AI - Industrial-Grade Docker Compose Configuration
+# ═══════════════════════════════════════════════════════════════════════════
+# Features:
+#   - Load Balancing (Nginx)
+#   - Monitoring (Prometheus + Grafana)
+#   - Automated Backups
+#   - Health Checks
+#   - Resource Limits
+#   - Logging
+#   - High Availability
+# ═══════════════════════════════════════════════════════════════════════════
+
+version: '3.8'
+
+# ─── Networks ───────────────────────────────────────────────────────────────
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+  monitoring:
+    driver: bridge
+
+# ─── Volumes ────────────────────────────────────────────────────────────────
+volumes:
+  postgres-data:
+  postgres-replica-data:
+  prometheus-data:
+  grafana-data:
+  backup-data:
+  nginx-cache:
+
+# ─── Services ───────────────────────────────────────────────────────────────
+services:
+  
+  # ═══════════════════════════════════════════════════════════════════════════
+  # LOAD BALANCER (Nginx)
+  # ═══════════════════════════════════════════════════════════════════════════
+  
+  nginx:
+    image: nginx:alpine
+    container_name: netra-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./configs/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./configs/nginx/ssl:/etc/nginx/ssl:ro
+      - nginx-cache:/var/cache/nginx
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - core
+      - core2
+      - core3
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # BACKEND API (Load Balanced - 3 Instances)
+  # ═══════════════════════════════════════════════════════════════════════════
+  
+  core:
+    build:
+      context: ..
+      dockerfile: ./backend/core/Dockerfile
+    container_name: netra-core-1
+    environment:
+      - INSTANCE_ID=1
+      - ANEMIA_API_URL=http://anemia:8001
+      - BYPASS_AUTH=${BYPASS_AUTH:-false}
+      - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - ../.env
+    networks:
+      - backend
+      - monitoring
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  core2:
+    build:
+      context: ..
+      dockerfile: ./backend/core/Dockerfile
+    container_name: netra-core-2
+    environment:
+      - INSTANCE_ID=2
+      - ANEMIA_API_URL=http://anemia:8001
+      - BYPASS_AUTH=${BYPASS_AUTH:-false}
+      - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - ../.env
+    networks:
+      - backend
+      - monitoring
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  core3:
+    build:
+      context: ..
+      dockerfile: ./backend/core/Dockerfile
+    container_name: netra-core-3
+    environment:
+      - INSTANCE_ID=3
+      - ANEMIA_API_URL=http://anemia:8001
+      - BYPASS_AUTH=${BYPASS_AUTH:-false}
+      - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - ../.env
+    networks:
+      - backend
+      - monitoring
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # FRONTEND (React + Vite)
+  # ═══════════════════════════════════════════════════════════════════════════
+  
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:80
+        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+        - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+        - VITE_LIVEKIT_URL=${VITE_LIVEKIT_URL}
+        - VITE_BYPASS_AUTH=${VITE_BYPASS_AUTH}
+    container_name: netra-frontend
+    networks:
+      - frontend
+    depends_on:
+      - nginx
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # AI MICROSERVICES
+  # ═══════════════════════════════════════════════════════════════════════════
+  
+  anemia:
+    build:
+      context: ..
+      dockerfile: ./backend/anemia/Dockerfile
+    container_name: netra-anemia
+    ports:
+      - "8001:8001"
+    volumes:
+      - ../backend/anemia/models:/app/models:ro
+    networks:
+      - backend
+      - monitoring
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  cataract:
+    build:
+      context: ..
+      dockerfile: ./backend/cataract/Dockerfile
+    container_name: netra-cataract
+    ports:
+      - "8002:8002"
+    volumes:
+      - ../backend/cataract/models:/app/models:ro
+    networks:
+      - backend
+      - monitoring
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  diabetic-retinopathy:
+    build:
+      context: ..
+      dockerfile: ./backend/diabetic-retinopathy/Dockerfile
+    container_name: netra-dr
+    ports:
+      - "8003:8003"
+    volumes:
+      - ../backend/diabetic-retinopathy/models:/app/models:ro
+    networks:
+      - backend
+      - monitoring
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  parkinsons-voice:
+    build:
+      context: ..
+      dockerfile: ./backend/parkinsons-voice/Dockerfile
+    container_name: netra-parkinsons
+    ports:
+      - "8004:8004"
+    volumes:
+      - ../backend/parkinsons-voice/models:/app/models:ro
+    networks:
+      - backend
+      - monitoring
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mental-health:
+    build:
+      context: ../backend/mental-health
+      dockerfile: Dockerfile
+    container_name: netra-mental-health
+    ports:
+      - "8005:8005"
+    networks:
+      - backend
+      - monitoring
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # MONITORING STACK
+  # ═══════════════════════════════════════════════════════════════════════════
+  
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: netra-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./configs/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    networks:
+      - monitoring
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: netra-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel
+      - GF_SERVER_ROOT_URL=http://localhost:3001
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./configs/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./configs/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    networks:
+      - monitoring
+    depends_on:
+      - prometheus
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Node Exporter (System Metrics)
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: netra-node-exporter
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - monitoring
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+  # Nginx Exporter (Nginx Metrics)
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: netra-nginx-exporter
+    command:
+      - '-nginx.scrape-uri=http://nginx/nginx_status'
+    networks:
+      - monitoring
+      - frontend
+    depends_on:
+      - nginx
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+  # ═══════════════════════════════════════════════════════════════════════════
+  # BACKUP SERVICE
+  # ═══════════════════════════════════════════════════════════════════════════
+  
+  backup:
+    image: postgres:15-alpine
+    container_name: netra-backup
+    volumes:
+      - backup-data:/backups
+      - ./scripts/backup:/scripts:ro
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - BACKUP_DIR=/backups/postgres
+      - RETENTION_DAYS=30
+      - S3_BUCKET=${S3_BUCKET:-}
+      - ENABLE_S3_UPLOAD=${ENABLE_S3_UPLOAD:-false}
+    entrypoint: /bin/sh
+    command: -c "crond -f -l 2"
+    networks:
+      - backend
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ═══════════════════════════════════════════════════════════════════════════
+# USAGE INSTRUCTIONS
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# Start all services:
+#   docker-compose -f docker-compose.industrial.yml up -d
+#
+# View logs:
+#   docker-compose -f docker-compose.industrial.yml logs -f
+#
+# Scale backend:
+#   docker-compose -f docker-compose.industrial.yml up -d --scale core=5
+#
+# Stop all services:
+#   docker-compose -f docker-compose.industrial.yml down
+#
+# Access services:
+#   - Frontend: http://localhost:3000
+#   - API (via Nginx): http://localhost:80
+#   - Prometheus: http://localhost:9090
+#   - Grafana: http://localhost:3001 (admin/admin)
+#
+# ═══════════════════════════════════════════════════════════════════════════

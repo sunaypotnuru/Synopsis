@@ -1,0 +1,77 @@
+{
+  "resourceType": "Bundle",
+  "id": "bundle-patient-9302b600",
+  "meta": {
+    "lastUpdated": "2026-05-06T22:15:55.774231Z"
+  },
+  "type": "collection",
+  "total": 1,
+  "entry": [
+    {
+      "fullUrl": "Patient/patient-9302b600",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "patient-9302b600",
+        "meta": {
+          "versionId": "1",
+          "lastUpdated": "2026-05-06T22:15:55.774231Z",
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+          ]
+        },
+        "identifier": [
+          {
+            "use": "usual",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR",
+                  "display": "Medical Record Number"
+                }
+              ]
+            },
+            "system": "http://netra-ai.com/patient-id",
+            "value": "patient-9302b600"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "Wong",
+            "given": [
+              "Michelle"
+            ],
+            "text": "Michelle Wong"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1991-05-15",
+        "address": [
+          {
+            "use": "home",
+            "type": "both",
+            "text": "7718 Main St, Georgetown, FL 96177",
+            "city": "Springfield",
+            "state": "FL",
+            "postalCode": "15798",
+            "country": "US"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(529) 991-9319",
+            "use": "home"
+          },
+          {
+            "system": "email",
+            "value": "michelle.wong@example.com",
+            "use": "home"
+          }
+        ]
+      }
+    }
+  ]
+}

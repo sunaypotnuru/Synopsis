@@ -1,0 +1,33 @@
+# A2A Agent Requirements for NetraAI Prior Authorization Automation
+# Updated: May 6, 2026
+
+# Core A2A SDK
+a2a-sdk[all]==1.0.2
+
+# HTTP Server support
+fastapi>=0.104.0
+uvicorn>=0.24.0
+
+# MCP Client for calling our MCP tools
+mcp-client>=0.5.0
+httpx>=0.25.0
+
+# Environment and configuration
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+
+# Healthcare standards
+fhir-resources>=7.0.0
+
+# Logging and monitoring
+structlog>=23.2.0
+sentry-sdk>=1.38.0
+
+# Date/time handling
+python-dateutil>=2.8.2
+
+# JSON handling
+orjson>=3.9.0
+
+# Async utilities
+asyncio-mqtt>=0.13.0

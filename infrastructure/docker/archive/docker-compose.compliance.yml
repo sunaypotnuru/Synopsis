@@ -1,0 +1,177 @@
+# Docker Compose for Compliance Infrastructure
+# TimescaleDB, Prometheus, Grafana for FDA APM, IEC 62304, SOC 2 monitoring
+
+version: '3.8'
+
+services:
+  # TimescaleDB for time-series metrics storage
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: netra-timescaledb
+    environment:
+      POSTGRES_DB: ${TIMESCALE_DB:-netra_compliance}
+      POSTGRES_USER: ${TIMESCALE_USER:-netra_admin}
+      POSTGRES_PASSWORD: ${TIMESCALE_PASSWORD:-change_me_in_production}
+      TIMESCALEDB_TELEMETRY: 'off'
+    ports:
+      - "5433:5432"
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+      - ../database/schema/MASTER_DATABASE_SCHEMA.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - netra-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TIMESCALE_USER:-netra_admin}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: netra-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=90d'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./configs/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - netra-network
+    depends_on:
+      - timescaledb
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: netra-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-change_me_in_production}
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
+      GF_SERVER_ROOT_URL: ${GRAFANA_ROOT_URL:-http://localhost:3000}
+      GF_DATABASE_TYPE: postgres
+      GF_DATABASE_HOST: timescaledb:5432
+      GF_DATABASE_NAME: ${TIMESCALE_DB:-netra_compliance}
+      GF_DATABASE_USER: ${TIMESCALE_USER:-netra_admin}
+      GF_DATABASE_PASSWORD: ${TIMESCALE_PASSWORD:-change_me_in_production}
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./configs/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./configs/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - grafana_data:/var/lib/grafana
+    networks:
+      - netra-network
+    depends_on:
+      - prometheus
+      - timescaledb
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # FDA APM Service
+  fda-apm-service:
+    build:
+      context: ../backend/monitoring
+      dockerfile: Dockerfile
+    container_name: netra-fda-apm
+    environment:
+      DATABASE_URL: postgresql://${TIMESCALE_USER:-netra_admin}:${TIMESCALE_PASSWORD:-change_me_in_production}@timescaledb:5432/${TIMESCALE_DB:-netra_compliance}
+      PROMETHEUS_URL: http://prometheus:9090
+      PORT: 8010
+    ports:
+      - "8010:8010"
+    volumes:
+      - ../backend/monitoring:/app
+    networks:
+      - netra-network
+    depends_on:
+      - timescaledb
+      - prometheus
+    restart: unless-stopped
+
+  # IEC 62304 Service
+  iec62304-service:
+    build:
+      context: ../backend/compliance
+      dockerfile: Dockerfile.iec62304
+    container_name: netra-iec62304
+    environment:
+      DATABASE_URL: postgresql://${TIMESCALE_USER:-netra_admin}:${TIMESCALE_PASSWORD:-change_me_in_production}@timescaledb:5432/${TIMESCALE_DB:-netra_compliance}
+      PORT: 8011
+    ports:
+      - "8011:8011"
+    volumes:
+      - ../backend/compliance:/app
+    networks:
+      - netra-network
+    depends_on:
+      - timescaledb
+    restart: unless-stopped
+
+  # SOC 2 Service
+  soc2-service:
+    build:
+      context: ../backend/compliance
+      dockerfile: Dockerfile.soc2
+    container_name: netra-soc2
+    environment:
+      DATABASE_URL: postgresql://${TIMESCALE_USER:-netra_admin}:${TIMESCALE_PASSWORD:-change_me_in_production}@timescaledb:5432/${TIMESCALE_DB:-netra_compliance}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      PORT: 8012
+    ports:
+      - "8012:8012"
+    volumes:
+      - ../backend/compliance:/app
+    networks:
+      - netra-network
+    depends_on:
+      - timescaledb
+    restart: unless-stopped
+
+  # Node Exporter for system metrics
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: netra-node-exporter
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - netra-network
+    restart: unless-stopped
+
+volumes:
+  timescaledb_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  netra-network:
+    driver: bridge

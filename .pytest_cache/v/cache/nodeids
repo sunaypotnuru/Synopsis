@@ -1,0 +1,14 @@
+[
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_anemia_gender_logic",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_anemia_input_validation",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_cataract_input_validation",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_comparison_logic",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_dr_input_validation",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_fhir_create_observation",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_fhir_ops_patient",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_fhir_query_timeline",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_mental_health_validation",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_parkinsons_validation",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_prior_auth_generation",
+  "agents/mcp-agent-hf/tests/test_all_tools.py::test_workflow_orchestration"
+]

@@ -1,0 +1,306 @@
+
+/* Industrial WCAG 2.2 Level AA Compliance CSS */
+/* Generated: 2026-04-23T09:22:21.594Z */
+
+/* 1. Focus Indicators (WCAG 2.4.7 & 2.4.13) - 3:1 contrast minimum */
+*:focus {
+  outline: 3px solid #005fcc !important;
+  outline-offset: 2px !important;
+}
+
+*:focus:not(:focus-visible) {
+  /* Only hide outline for mouse users, never completely remove */
+  outline: 1px solid transparent !important;
+}
+
+*:focus-visible {
+  outline: 3px solid #005fcc !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 6px rgba(0, 95, 204, 0.25) !important;
+}
+
+/* Dark background focus indicators */
+.dark *:focus-visible,
+[data-theme="dark"] *:focus-visible {
+  outline-color: #ffffff !important;
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.25) !important;
+}
+
+/* NEVER use outline: none - violates WCAG 2.4.7 */
+/* All focus indicators must be visible for keyboard accessibility */
+
+/* 2. High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  *:focus-visible {
+    outline: 4px solid currentColor !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* 3. Reduced Motion Support (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 4. Touch Target Size (WCAG 2.2 - 2.5.8) */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+select,
+a {
+  min-height: 44px !important;
+  min-width: 44px !important;
+}
+
+/* Exception for inline links */
+p a,
+li a,
+td a,
+span a {
+  min-height: auto !important;
+  min-width: auto !important;
+}
+
+/* 5. Color Contrast Enhancements - WCAG 2.2 Level AA Compliant */
+.text-gray-500 {
+  color: #6B7280 !important; /* 4.83:1 contrast - WCAG AA compliant */
+}
+
+.border-gray-500 {
+  border-color: #6B7280 !important; /* 4.83:1 contrast - WCAG AA compliant */
+}
+
+.bg-gray-500 {
+  background-color: #6B7280 !important; /* 4.83:1 contrast - WCAG AA compliant */
+}
+
+/* Additional color fixes for remaining contrast issues */
+.text-gray-500 {
+  color: #6B7280 !important; /* Ensure consistent 4.83:1 contrast */
+}
+
+.border-gray-500 {
+  border-color: #6B7280 !important; /* Ensure consistent 4.83:1 contrast */
+}
+
+/* 6. Screen Reader Only Content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* 7. Skip Navigation Links */
+.skip-nav {
+  position: absolute !important;
+  top: -40px !important;
+  left: 6px !important;
+  background: #000 !important;
+  color: #fff !important;
+  padding: 8px !important;
+  text-decoration: none !important;
+  z-index: 9999 !important;
+  border-radius: 4px !important;
+}
+
+.skip-nav:focus {
+  top: 6px !important;
+}
+
+/* 8. Live Region Styling */
+[aria-live] {
+  position: relative !important;
+}
+
+[role="alert"] {
+  padding: 12px !important;
+  border-radius: 4px !important;
+  background-color: #fef2f2 !important;
+  border: 1px solid #fecaca !important;
+  color: #991b1b !important;
+}
+
+[role="status"] {
+  padding: 12px !important;
+  border-radius: 4px !important;
+  background-color: #f0f9ff !important;
+  border: 1px solid #bae6fd !important;
+  color: #1e40af !important;
+}
+
+/* 9. Form Validation Styling */
+[aria-invalid="true"] {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}
+
+.error-message {
+  color: #dc2626 !important;
+  font-size: 0.875rem !important;
+  margin-top: 4px !important;
+  display: block !important;
+}
+
+/* 10. Keyboard Navigation Enhancements */
+[tabindex="0"]:focus,
+[tabindex="-1"]:focus {
+  outline: 3px solid #005fcc !important;
+  outline-offset: 2px !important;
+}
+
+/* 11. Modal and Dialog Accessibility */
+[aria-modal="true"] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1000 !important;
+}
+
+/* 12. Table Accessibility */
+table {
+  border-collapse: collapse !important;
+}
+
+th {
+  text-align: left !important;
+  font-weight: bold !important;
+}
+
+/* 13. List Accessibility */
+[role="list"] {
+  list-style: none !important;
+  padding: 0 !important;
+}
+
+[role="listitem"] {
+  display: list-item !important;
+}
+
+/* 14. Button State Indicators */
+[aria-pressed="true"] {
+  background-color: #1d4ed8 !important;
+  color: white !important;
+}
+
+[aria-expanded="true"] {
+  background-color: #f3f4f6 !important;
+}
+
+/* 15. Loading State Accessibility */
+[aria-busy="true"] {
+  cursor: wait !important;
+  opacity: 0.7 !important;
+}
+
+/* 16. Disabled State Styling */
+[aria-disabled="true"] {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+/* 17. Progress Indicators */
+[role="progressbar"] {
+  background-color: #f3f4f6 !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+}
+
+/* 18. Landmark Styling */
+[role="banner"],
+[role="navigation"],
+[role="main"],
+[role="complementary"],
+[role="contentinfo"] {
+  position: relative !important;
+}
+
+/* 19. Text Spacing (WCAG 2.2 - 1.4.12) */
+.wcag-text-spacing {
+  line-height: 1.5 !important;
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+
+.wcag-text-spacing p {
+  margin-bottom: 2em !important;
+}
+
+/* 20. Content on Hover/Focus (WCAG 2.2 - 1.4.13) */
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::after {
+  content: attr(data-tooltip) !important;
+  position: absolute !important;
+  background: #000 !important;
+  color: #fff !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  font-size: 0.875rem !important;
+  z-index: 1000 !important;
+  white-space: nowrap !important;
+}
+
+/* 21. Print Accessibility */
+@media print {
+  .skip-nav,
+  [aria-hidden="true"] {
+    display: none !important;
+  }
+  
+  a::after {
+    content: " (" attr(href) ")" !important;
+  }
+}
+
+/* 22. Mobile Accessibility Enhancements */
+@media (max-width: 768px) {
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    min-height: 48px !important;
+    min-width: 48px !important;
+  }
+  
+  input,
+  select,
+  textarea {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+}
+
+/* 23. Windows High Contrast Mode */
+@media (-ms-high-contrast: active) {
+  *:focus {
+    outline: 2px solid windowText !important;
+  }
+}
+
+/* 24. Forced Colors Mode */
+@media (forced-colors: active) {
+  *:focus {
+    outline: 2px solid highlight !important;
+  }
+  
+  [aria-invalid="true"] {
+    border-color: highlight !important;
+  }
+}

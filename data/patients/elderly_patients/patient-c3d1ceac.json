@@ -1,0 +1,119 @@
+{
+  "resourceType": "Bundle",
+  "id": "bundle-patient-c3d1ceac",
+  "meta": {
+    "lastUpdated": "2026-05-06T22:15:55.716130Z"
+  },
+  "type": "collection",
+  "total": 2,
+  "entry": [
+    {
+      "fullUrl": "Patient/patient-c3d1ceac",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "patient-c3d1ceac",
+        "meta": {
+          "versionId": "1",
+          "lastUpdated": "2026-05-06T22:15:55.715597Z",
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+          ]
+        },
+        "identifier": [
+          {
+            "use": "usual",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR",
+                  "display": "Medical Record Number"
+                }
+              ]
+            },
+            "system": "http://netra-ai.com/patient-id",
+            "value": "patient-c3d1ceac"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official",
+            "family": "Hill",
+            "given": [
+              "Raymond"
+            ],
+            "text": "Raymond Hill"
+          }
+        ],
+        "gender": "male",
+        "birthDate": "1959-05-23",
+        "address": [
+          {
+            "use": "home",
+            "type": "both",
+            "text": "4337 Oak Ave, Georgetown, NY 55613",
+            "city": "Franklin",
+            "state": "CA",
+            "postalCode": "11592",
+            "country": "US"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(656) 534-6305",
+            "use": "home"
+          },
+          {
+            "system": "email",
+            "value": "raymond.hill@example.com",
+            "use": "home"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Condition/condition-225a454a",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "condition-225a454a",
+        "meta": {
+          "lastUpdated": "2026-05-06T22:15:55.715597Z"
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "193570009",
+              "display": "Cataract"
+            }
+          ],
+          "text": "Cataract"
+        },
+        "subject": {
+          "reference": "Patient/patient-c3d1ceac"
+        },
+        "onsetDateTime": "2025-06-24T22:15:55.715597Z"
+      }
+    }
+  ]
+}

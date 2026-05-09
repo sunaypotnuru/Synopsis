@@ -1,0 +1,130 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+@import './animations.css';
+
+
+/* Accessibility Styles */
+.high-contrast {
+  filter: contrast(150%) saturate(120%);
+}
+
+.large-text {
+  font-size: 115% !important;
+}
+
+.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   GLOBAL DARK MODE OVERRIDES
+   Because many pages use hardcoded Tailwind colors
+   (bg-[#F0FDFA], text-[#0F172A] etc), these rules
+   remap the full page background and text in dark mode.
+   ═══════════════════════════════════════════════════ */
+
+/* Smooth theme transitions */
+body,
+main,
+.min-h-screen {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Page backgrounds */
+.dark .min-h-screen,
+.dark main,
+.dark body {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+/* Gradient backgrounds — replaced with dark neutral in dark mode */
+.dark [class*="from-\[#F0FDFA\]"],
+.dark [class*="from-\[#F8FAFC\]"],
+.dark [class*="via-white"] {
+  --tw-gradient-from: #0F172A !important;
+  --tw-gradient-via: #1E293B !important;
+  --tw-gradient-to: #0F172A !important;
+}
+
+/* White backgrounds → dark card */
+.dark [class*="bg-white"] {
+  background-color: var(--card) !important;
+}
+
+/* Gray backgrounds → darker */
+.dark [class*="bg-gray-50"],
+.dark [class*="bg-\[#F8FAFC\]"],
+.dark [class*="bg-\[#F0FDFA\]"],
+.dark [class*="bg-\[#F0F9FF\]"] {
+  background-color: #1E293B !important;
+}
+
+.dark [class*="bg-gray-100"] {
+  background-color: #334155 !important;
+}
+
+/* Text colors */
+.dark [class*="text-\[#0F172A\]"] {
+  color: #F8FAFC !important;
+}
+
+.dark [class*="text-\[#64748B\]"],
+.dark [class*="text-gray-500"],
+.dark [class*="text-gray-600"] {
+  color: #94A3B8 !important;
+}
+
+.dark [class*="text-gray-400"] {
+  color: #64748B !important;
+}
+
+/* Border colors */
+.dark [class*="border-gray-100"],
+.dark [class*="border-gray-200"] {
+  border-color: rgba(248, 250, 252, 0.08) !important;
+}
+
+/* Inputs */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #1E293B !important;
+  color: #F8FAFC !important;
+  border-color: rgba(248, 250, 252, 0.12) !important;
+}
+
+/* NavbarMain specific — white navbar → dark */
+.dark header,
+.dark nav,
+.dark [class*="backdrop-blur"] {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  border-color: rgba(248, 250, 252, 0.08) !important;
+}
+
+/* Cards */
+.dark [data-slot="card"],
+.dark .bg-white {
+  background-color: var(--card) !important;
+  border-color: rgba(248, 250, 252, 0.08) !important;
+}
+
+/* Additional text color — #1F2D3D is used widely in AppointmentsPage and others */
+.dark [class*="text-\[#1F2D3D\]"] {
+  color: #F1F5F9 !important;
+}
+
+/* Appointment / history card backgrounds */
+.dark [class*="bg-gray-50\/50"],
+.dark [class*="bg-gray-50/50"] {
+  background-color: var(--background) !important;
+}
+
+/* Page-level min-h-screen gradient backgrounds */
+.dark [class*="min-h-screen"] {
+  background-color: var(--background) !important;
+}

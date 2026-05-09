@@ -1,0 +1,280 @@
+/**
+ * Animation CSS Variables and Utilities
+ * 
+ * Global CSS variables for animations that can be used in CSS files.
+ * These match the JavaScript animation tokens for consistency.
+ */
+
+:root {
+  /* Duration tokens */
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 800ms;
+  
+  /* Easing tokens */
+  --easing-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --easing-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --easing-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
+  --easing-gentle: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --easing-sharp: cubic-bezier(0.4, 0.0, 0.6, 1);
+}
+
+/**
+ * Utility classes for common animations
+ * Use these for simple CSS-only animations
+ */
+
+/* Fade animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--duration-normal) var(--easing-gentle);
+}
+
+.animate-fade-out {
+  animation: fadeOut var(--duration-normal) var(--easing-gentle);
+}
+
+/* Slide animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-up {
+  animation: slideInUp var(--duration-normal) var(--easing-decelerate);
+}
+
+.animate-slide-in-down {
+  animation: slideInDown var(--duration-normal) var(--easing-decelerate);
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft var(--duration-normal) var(--easing-decelerate);
+}
+
+.animate-slide-in-right {
+  animation: slideInRight var(--duration-normal) var(--easing-decelerate);
+}
+
+/* Scale animations */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--duration-fast) var(--easing-gentle);
+}
+
+/* Shimmer effect for skeletons */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Pulse animation for loading states */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Spin animation for loading spinners */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Bounce animation (use sparingly in healthcare context) */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s ease-in-out infinite;
+}
+
+/**
+ * Reduced Motion Support
+ * Disable or simplify animations for users who prefer reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Use pulse instead of shimmer for reduced motion */
+  .animate-shimmer {
+    animation: pulse 2s infinite;
+  }
+  
+  /* Disable bounce completely */
+  .animate-bounce {
+    animation: none;
+  }
+}
+
+/**
+ * Transition utilities
+ * Use these for hover states and simple transitions
+ */
+.transition-colors {
+  transition-property: color, background-color, border-color;
+  transition-timing-function: var(--easing-gentle);
+  transition-duration: var(--duration-fast);
+}
+
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: var(--easing-gentle);
+  transition-duration: var(--duration-fast);
+}
+
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: var(--easing-gentle);
+  transition-duration: var(--duration-fast);
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: var(--easing-gentle);
+  transition-duration: var(--duration-fast);
+}
+
+/**
+ * Focus visible styles with animation
+ * Ensures keyboard navigation is clear and animated
+ */
+:focus-visible {
+  outline: 2px solid var(--color-primary, #3b82f6);
+  outline-offset: 2px;
+  transition: outline-offset var(--duration-fast) var(--easing-gentle);
+}
+
+:focus-visible:not(:focus-visible) {
+  outline: none;
+}
+
+/**
+ * Hover lift effect for cards
+ */
+.hover-lift {
+  transition: transform var(--duration-fast) var(--easing-gentle),
+              box-shadow var(--duration-fast) var(--easing-gentle);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,161 @@
+version: '3.8'
+
+networks:
+  netra-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+    driver: local
+
+services:
+  # Redis Cache Service
+  redis:
+    image: redis:7-alpine
+    container_name: netra-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - netra-network
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  backend:
+    image: netra-ai-backend:latest
+    container_name: netra-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../.env
+    environment:
+      - ANEMIA_API_URL=http://anemia-service:10000
+      - DR_API_URL=http://diabetic-retinopathy:10000
+      - MENTAL_HEALTH_API_URL=http://mental-health:10000
+      - PARKINSONS_API_URL=http://parkinsons-voice:10000
+      - CATARACT_API_URL=http://cataract:10000
+      - REDIS_URL=redis://redis:6379
+      - BYPASS_AUTH=${BYPASS_AUTH:-false}
+      - PYTHONUNBUFFERED=1
+    networks:
+      - netra-network
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  frontend:
+    image: netra-ai-frontend:latest
+    container_name: netra-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - netra-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  anemia-service:
+    image: netra-ai-anemia-service:latest
+    container_name: netra-anemia-service
+    ports:
+      - "8001:10000"
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:10000/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  mental-health:
+    image: netra-ai-mental-health:latest
+    container_name: netra-mental-health
+    ports:
+      - "8003:10000"
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:10000/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  diabetic-retinopathy:
+    image: netra-ai-diabetic-retinopathy:latest
+    container_name: netra-diabetic-retinopathy
+    ports:
+      - "8002:10000"
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:10000/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  cataract:
+    image: netra-ai-cataract:latest
+    container_name: netra-cataract
+    ports:
+      - "8005:10000"
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:10000/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+
+  parkinsons-voice:
+    image: netra-ai-parkinsons-voice:latest
+    container_name: netra-parkinsons-voice
+    ports:
+      - "8004:10000"
+    networks:
+      - netra-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:10000/health')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped

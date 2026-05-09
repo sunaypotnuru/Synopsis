@@ -1,0 +1,48 @@
+# IEC 62304 Traceability Service Dockerfile
+FROM python:3.11-slim
+
+LABEL maintainer="NetraAI Team <dev@netraai.com>"
+LABEL description="IEC 62304 Medical Device Software Traceability Service"
+LABEL version="2.0.0"
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libpq-dev \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Create non-root user for security
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+RUN chown -R appuser:appuser /app
+USER appuser
+
+# Expose port
+EXPOSE 8011
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8011/health || exit 1
+
+# Environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8011
+ENV SERVICE_NAME=iec62304-traceability
+
+# Run the application
+CMD ["python", "-m", "uvicorn", "iec62304-api:app", "--host", "0.0.0.0", "--port", "8011", "--workers", "2"]
